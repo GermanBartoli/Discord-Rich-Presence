@@ -1,0 +1,6 @@
+native/host-manifest.json
+native/launcher/bin/
+native/launcher/obj/
+native/launcher/publish/
+*.zip
+.DS_Store

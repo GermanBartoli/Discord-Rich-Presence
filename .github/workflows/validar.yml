@@ -1,0 +1,19 @@
+name: Validar extensión
+on: [push, pull_request]
+jobs:
+  validar:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Revisar JavaScript
+        shell: pwsh
+        run: |
+          node --check extension/background.js
+          node --check extension/youtube-music.js
+          node --check extension/popup.js
+          node --check native/host.mjs
+      - name: Compilar conector
+        run: dotnet publish native/launcher/Launcher.csproj -c Release -o native/launcher/publish

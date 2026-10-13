@@ -1,0 +1,6 @@
+body { width: 280px; margin: 0; padding: 18px; color: #eee; background: #18191c; font: 14px system-ui, sans-serif; }
+h1 { margin: 0 0 18px; font-size: 19px; }
+.switch { display: flex; align-items: center; gap: 9px; cursor: pointer; }
+input { accent-color: #e40813; width: 18px; height: 18px; }
+#status { margin: 17px 0 10px; color: #b5bac1; }
+small { color: #8f969e; line-height: 1.4; }
