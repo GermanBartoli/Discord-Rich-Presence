@@ -24,7 +24,10 @@ child.stdout.on('data', chunk => {
     if (!result.connected) { console.error(result.error); process.exitCode = 1; clearTimeout(timeout); child.stdin.end(); return }
     responses++
     if (responses === 1) {
-      send({ kind: 'activity', activity: { type: 2, details: 'Prueba local', state: 'YouTube Music' } })
+      send({ kind: 'activity', activity: { type: 2, details: 'Prueba local', state: 'YouTube Music',
+        assets: { large_image: 'https://cdn.rcd.gg/PreMiD/websites/Y/YouTube%20Music/assets/logo.png' },
+        buttons: [{ label: 'Abrir YouTube Music', url: 'https://music.youtube.com/' }],
+        details_url: 'https://music.youtube.com/' } })
     } else if (responses === 2) {
       console.log('Discord aceptó SET_ACTIVITY')
       send({ kind: 'clear' })

@@ -54,6 +54,12 @@ function scheduleSend() {
   timer = setTimeout(sendLatest, Math.max(0, 4100 - (Date.now() - lastSent)))
 }
 
+function refreshMusicTabs() {
+  chrome.tabs.query({ url: 'https://music.youtube.com/*' }, tabs => {
+    for (const tab of tabs) chrome.tabs.sendMessage(tab.id, { kind: 'refresh' }).catch(() => {})
+  })
+}
+
 chrome.runtime.onMessage.addListener((message, sender, reply) => {
   ;(async () => {
     if (message.kind === 'status') {
@@ -67,10 +73,11 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
         error = ''
       } else {
         connect()
-        chrome.tabs.query({ url: 'https://music.youtube.com/*' }, tabs => {
-          for (const tab of tabs) chrome.tabs.sendMessage(tab.id, { kind: 'refresh' }).catch(() => {})
-        })
+        refreshMusicTabs()
       }
+      reply({ ok: true })
+    } else if (message.kind === 'refresh') {
+      refreshMusicTabs()
       reply({ ok: true })
     } else if (message.kind === 'activity' && sender.tab?.url?.startsWith('https://music.youtube.com/')) {
       if (!(await isEnabled())) return reply({ ok: false })

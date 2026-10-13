@@ -1,5 +1,8 @@
 // Adaptación de la actividad YouTube Music de PreMiD; ver THIRD_PARTY_NOTICES.md.
 const LOGO = 'https://cdn.rcd.gg/PreMiD/websites/Y/YouTube%20Music/assets/logo.png'
+const DEFAULTS = { privacyMode: false, showCover: true, showTimestamps: true,
+  hidePaused: false, showBrowsing: true, showButtons: true, links: true }
+let settings = { ...DEFAULTS }
 let video = null
 let observed = null
 let updateTimer = null
@@ -55,22 +58,35 @@ function getActivity() {
     || image('ytmusic-player-bar img#img') || session?.metadata?.artwork?.at(-1)?.src || LOGO
   const watchId = new URL(location.href).searchParams.get('v')
   const artistLink = document.querySelector('.ytmusicTrackInfoByline a[href], .byline a[href]')?.href
+  const bylineLinks = [...document.querySelectorAll('.ytmusicTrackInfoByline a[href], .byline a[href]')]
+  const albumLink = album && bylineLinks.length > 1 ? bylineLinks.at(-1)?.href : undefined
   const songUrl = watchId ? `https://music.youtube.com/watch?v=${encodeURIComponent(watchId)}` : undefined
 
   if (['playing', 'paused'].includes(state) && title) {
+    if (state === 'paused' && settings.hidePaused) return null
+    if (settings.privacyMode) {
+      return { type: 2, details: 'Escuchando una canción', assets: { large_image: LOGO } }
+    }
+    const repeat = document.querySelector('ytmusic-player-bar[slot="player-bar"]')?.getAttribute('repeat-mode')
+    const smallText = state === 'paused' ? 'En pausa'
+      : repeat === 'ONE' ? 'Repitiendo canción' : repeat && repeat !== 'NONE' ? 'Repitiendo playlist' : undefined
     const activity = {
       type: 2, details: title, state: artist || undefined,
-      assets: { large_image: artwork, large_text: album || 'YouTube Music',
-        ...(state === 'paused' ? { small_image: LOGO, small_text: 'En pausa' } : {}) },
-      buttons: songUrl ? [{ label: 'Escuchar canción', url: songUrl }] : undefined,
-      details_url: songUrl,
-      state_url: artistLink,
+      assets: { large_image: settings.showCover ? artwork : LOGO, large_text: album || 'YouTube Music',
+        ...(smallText ? { small_image: LOGO, small_text: smallText } : {}) },
+      buttons: settings.showButtons && songUrl ? [
+        { label: 'Escuchar canción', url: songUrl },
+        ...(albumLink ? [{ label: 'Ver álbum', url: albumLink }] : artistLink ? [{ label: 'Ver artista', url: artistLink }] : []),
+      ] : undefined,
+      details_url: settings.links ? songUrl : undefined,
+      state_url: settings.links ? artistLink : undefined,
     }
-    if (state === 'playing') activity.timestamps = timestamps(media)
+    if (state === 'playing' && settings.showTimestamps) activity.timestamps = timestamps(media)
     return activity
   }
 
   // Navegación equivalente al ajuste Show Browsing, activado por defecto en el original.
+  if (!settings.showBrowsing) return null
   if (lastPath !== location.pathname) {
     lastPath = location.pathname
     startBrowsing = Math.floor(Date.now() / 1000)
@@ -87,7 +103,7 @@ function getActivity() {
   else if (path.startsWith('/new_releases')) details = 'Explorando lanzamientos'
   else if (path.startsWith('/charts')) details = 'Explorando listas'
   else if (path.startsWith('/moods_and_genres')) details = 'Explorando géneros'
-  return { type: 0, details, state: browsingState || undefined,
+  return { type: 0, details, state: settings.privacyMode ? undefined : browsingState || undefined,
     assets: { large_image: LOGO }, timestamps: { start: startBrowsing } }
 }
 
@@ -131,3 +147,9 @@ chrome.runtime.onMessage.addListener(message => {
 })
 update()
 setInterval(update, 5000)
+chrome.storage.local.get(DEFAULTS).then(saved => { settings = saved; lastPayload = ''; update() })
+chrome.storage.onChanged.addListener(changes => {
+  if (Object.keys(changes).some(key => key in DEFAULTS)) {
+    chrome.storage.local.get(DEFAULTS).then(saved => { settings = saved; lastPayload = ''; update() })
+  }
+})
