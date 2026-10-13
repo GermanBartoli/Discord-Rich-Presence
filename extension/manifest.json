@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Discord Rich Presence para YouTube Music",
+  "version": "1.0.0",
+  "description": "Muestra la actividad de YouTube Music en Discord y permite activarla o desactivarla.",
+  "permissions": ["storage", "nativeMessaging"],
+  "host_permissions": ["https://music.youtube.com/*"],
+  "icons": { "16": "icon-16.png", "48": "icon-48.png", "128": "icon-128.png" },
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{ "matches": ["https://music.youtube.com/*"], "js": ["youtube-music.js"], "run_at": "document_idle" }],
+  "action": { "default_title": "YouTube Music en Discord", "default_popup": "popup.html", "default_icon": "icon-48.png" }
+}
