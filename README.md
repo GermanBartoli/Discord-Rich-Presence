@@ -1,6 +1,6 @@
 # Discord Rich Presence para YouTube Music
 
-Extensión de Chrome Manifest V3 que muestra en Discord de escritorio la canción o sección abierta en YouTube Music. Incluye un interruptor para activar o desactivar la actividad. Proyecto independiente de Google, YouTube y Discord.
+Extensión de Chrome Manifest V3 que muestra en Discord de escritorio la canción o sección abierta en YouTube Music. Incluye un interruptor para activar o desactivar la actividad y conserva los ajustes de privacidad, carátula, tiempo, pausa, navegación, botones y enlaces. Proyecto independiente de Google, YouTube y Discord.
 
 ## Instalación en Windows
 
@@ -27,6 +27,7 @@ El ZIP de `extension` es el paquete para subir a Chrome Web Store. El conector W
 ```powershell
 dotnet publish native/launcher/Launcher.csproj -c Release -o native/launcher/publish
 node tests/host-smoke.mjs
+node tests/content-smoke.mjs
 node --check extension/background.js
 node --check extension/youtube-music.js
 ```

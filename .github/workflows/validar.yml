@@ -17,3 +17,5 @@ jobs:
           node --check native/host.mjs
       - name: Compilar conector
         run: dotnet publish native/launcher/Launcher.csproj -c Release -o native/launcher/publish
+      - name: Probar lectura de YouTube Music
+        run: node tests/content-smoke.mjs
