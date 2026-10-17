@@ -57,7 +57,10 @@ function getActivity() {
   const album = session?.metadata?.album
   const artwork = image('#song-image img') || image('.ytmusicTrackInfoThumbnail')
     || image('ytmusic-player-bar img#img') || session?.metadata?.artwork?.at(-1)?.src || LOGO
-  const watchId = new URL(location.href).searchParams.get('v')
+  const playerLink = document.querySelector('a.ytp-title-link.yt-uix-sessionlink')?.href
+  const watchId = (playerLink && new URL(playerLink).searchParams.get('v'))
+    || document.querySelector('.ytmusicTrackInfoThumbnail')?.src?.match(/\/vi\/([\w-]{11})\//)?.[1]
+    || new URL(location.href).searchParams.get('v')
   const artistLink = document.querySelector('.ytmusicTrackInfoByline a[href], .byline a[href]')?.href
   const bylineLinks = [...document.querySelectorAll('.ytmusicTrackInfoByline a[href], .byline a[href]')]
   const albumLink = album && bylineLinks.length > 1 ? bylineLinks.at(-1)?.href : undefined
