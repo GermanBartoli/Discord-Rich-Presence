@@ -1,5 +1,6 @@
 // Adaptación de la actividad YouTube Music de PreMiD; ver THIRD_PARTY_NOTICES.md.
 const LOGO = 'https://cdn.rcd.gg/PreMiD/websites/Y/YouTube%20Music/assets/logo.png'
+const PAUSE = 'https://raw.githubusercontent.com/GermanBartoli/Discord-Rich-Presence/main/docs/icono-pausa.png'
 const DEFAULTS = { privacyMode: false, showCover: true, showTimestamps: true,
   hidePaused: false, showBrowsing: true, showButtons: true, links: true }
 let settings = { ...DEFAULTS }
@@ -73,7 +74,7 @@ function getActivity() {
     const activity = {
       type: 2, details: title, state: artist || undefined,
       assets: { large_image: settings.showCover ? artwork : LOGO, large_text: album || 'YouTube Music',
-        ...(smallText ? { small_image: LOGO, small_text: smallText } : {}) },
+        ...(smallText ? { small_image: state === 'paused' ? PAUSE : LOGO, small_text: smallText } : {}) },
       buttons: settings.showButtons && songUrl ? [
         { label: 'Escuchar canción', url: songUrl },
         ...(albumLink ? [{ label: 'Ver álbum', url: albumLink }] : artistLink ? [{ label: 'Ver artista', url: artistLink }] : []),

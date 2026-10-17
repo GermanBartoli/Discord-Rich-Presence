@@ -6,4 +6,6 @@ La obra original se distribuye bajo la [Mozilla Public License 2.0](LICENSE). Lo
 
 Cambios de esta versión: identificación estable de canción, tiempos calculados desde el video, listeners asociados al reproductor activo, estado de pausa y selectores de la interfaz actual de YouTube Music. Las capturas de `docs/media/` ilustran la interfaz de PreMiD y fueron proporcionadas para este proyecto.
 
+El icono de YouTube Music para Discord se tomó de la [ficha oficial de Google Play](https://play.google.com/store/apps/details?id=com.google.android.apps.youtube.music), publicada por Google LLC.
+
 PreMiD, YouTube, Google y Discord son marcas de sus respectivos titulares. Este repositorio es independiente de esos servicios.
