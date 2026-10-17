@@ -37,6 +37,22 @@ assert.equal(sent[0].activity.details, 'Canción nueva')
 assert.equal(sent[0].activity.state, 'Artista')
 assert.equal(sent[0].activity.timestamps.end - sent[0].activity.timestamps.start, 180)
 assert.equal(sent[0].activity.buttons[0].url, 'https://music.youtube.com/watch?v=abc12345')
+context.location.href = 'https://music.youtube.com/'
+elements['a.ytp-title-link.yt-uix-sessionlink'] = { href: 'https://music.youtube.com/watch?list=RDAMVM&v=QgRc7SeEkqY' }
+elements['.ytmusicTrackInfoThumbnail'] = { src: 'https://i.ytimg.com/vi/QgRc7SeEkqY/hqdefault.jpg' }
+onChanged({ links: {} })
+await new Promise(resolve => setImmediate(resolve))
+assert.equal(sent.at(-1).activity.details_url, 'https://music.youtube.com/watch?v=QgRc7SeEkqY')
+assert.equal(sent.at(-1).activity.buttons[0].url, 'https://music.youtube.com/watch?v=QgRc7SeEkqY')
+delete elements['a.ytp-title-link.yt-uix-sessionlink']
+onChanged({ links: {} })
+await new Promise(resolve => setImmediate(resolve))
+assert.equal(sent.at(-1).activity.details_url, 'https://music.youtube.com/watch?v=QgRc7SeEkqY')
+settings.links = false
+onChanged({ links: {} })
+await new Promise(resolve => setImmediate(resolve))
+assert.equal(sent.at(-1).activity.details_url, undefined)
+settings.links = true
 video.paused = true
 onChanged({ showCover: {} })
 await new Promise(resolve => setImmediate(resolve))
