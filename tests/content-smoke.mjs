@@ -37,9 +37,15 @@ assert.equal(sent[0].activity.details, 'Canción nueva')
 assert.equal(sent[0].activity.state, 'Artista')
 assert.equal(sent[0].activity.timestamps.end - sent[0].activity.timestamps.start, 180)
 assert.equal(sent[0].activity.buttons[0].url, 'https://music.youtube.com/watch?v=abc12345')
+video.paused = true
+onChanged({ showCover: {} })
+await new Promise(resolve => setImmediate(resolve))
+assert.equal(sent.at(-1).activity.assets.small_image,
+  'https://raw.githubusercontent.com/GermanBartoli/Discord-Rich-Presence/main/docs/icono-pausa.png')
+assert.equal(sent.at(-1).activity.assets.small_text, 'En pausa')
 settings.privacyMode = true
 onChanged({ privacyMode: {} })
 await new Promise(resolve => setImmediate(resolve))
 assert.equal(sent.at(-1).activity.details, 'Escuchando una canción')
 assert.equal(sent.at(-1).activity.buttons, undefined)
-console.log('Lectura de canción y modo privacidad correctos')
+console.log('Lectura de canción, pausa y modo privacidad correctos')
