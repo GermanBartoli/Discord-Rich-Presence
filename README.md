@@ -14,6 +14,8 @@ El conector requiere Node.js y .NET 9 instalados. Chrome se comunica con él med
 
 ## Funcionamiento
 
+En **Ajustes de YouTube Music → Mostrar en Discord** podés elegir entre **YouTube Music**, **Artista de la canción** o **Nombre de la canción** para el texto de actividad en la lista de miembros. La selección se guarda y se aplica al cambiarla. El modo privacidad oculta los datos de la canción.
+
 La extensión observa únicamente `https://music.youtube.com/*`. Lee el título, artista, carátula, enlace y tiempo desde el reproductor. Detecta cambios del elemento de video y de los metadatos, incluso al pasar automáticamente a otra canción. Conserva el estado más reciente y separa los envíos a Discord al menos 4,1 segundos. Al desactivar la extensión o cerrar la última pestaña activa, limpia la actividad.
 
 La carpeta [`source-premid`](source-premid) conserva el código original de la actividad adaptada. La versión ejecutable en Chrome está en [`extension`](extension). La lógica de lectura y sincronización se portó a JavaScript para funcionar sin PreMiD.

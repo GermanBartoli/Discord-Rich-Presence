@@ -2,7 +2,7 @@
 const LOGO = 'https://cdn.rcd.gg/PreMiD/websites/Y/YouTube%20Music/assets/logo.png'
 const PAUSE = 'https://raw.githubusercontent.com/GermanBartoli/Discord-Rich-Presence/main/docs/icono-pausa.png'
 const DEFAULTS = { privacyMode: false, showCover: true, showTimestamps: true,
-  hidePaused: false, showBrowsing: true, showButtons: true, links: true }
+  hidePaused: false, showBrowsing: true, showButtons: true, links: true, statusDisplay: 'name' }
 let settings = { ...DEFAULTS }
 let video = null
 let observed = null
@@ -76,6 +76,7 @@ function getActivity() {
       : repeat === 'ONE' ? 'Repitiendo canción' : repeat && repeat !== 'NONE' ? 'Repitiendo playlist' : undefined
     const activity = {
       type: 2, details: title, state: artist || undefined,
+      status_display_type: settings.statusDisplay === 'song' ? 2 : settings.statusDisplay === 'artist' && artist ? 1 : 0,
       assets: { large_image: settings.showCover ? artwork : LOGO, large_text: album || 'YouTube Music',
         ...(smallText ? { small_image: state === 'paused' ? PAUSE : LOGO, small_text: smallText } : {}) },
       buttons: settings.showButtons && songUrl ? [
