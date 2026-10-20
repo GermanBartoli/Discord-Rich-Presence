@@ -7,6 +7,12 @@
   <p id="status" role="status">Comprobando conexión…</p>
   <details>
     <summary>Ajustes de YouTube Music</summary>
+    <label for="statusDisplay">Mostrar en Discord</label>
+    <select id="statusDisplay" data-setting="statusDisplay">
+      <option value="name">YouTube Music</option>
+      <option value="artist">Artista de la canción</option>
+      <option value="song">Nombre de la canción</option>
+    </select>
     <label><input type="checkbox" data-setting="privacyMode"> Modo privacidad</label>
     <label><input type="checkbox" data-setting="showCover"> Mostrar carátula</label>
     <label><input type="checkbox" data-setting="showTimestamps"> Mostrar tiempo</label>

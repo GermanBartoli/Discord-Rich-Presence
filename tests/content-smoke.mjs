@@ -35,6 +35,7 @@ const context = {
 vm.runInNewContext(readFileSync('extension/youtube-music.js', 'utf8'), context)
 assert.equal(sent[0].activity.details, 'Canción nueva')
 assert.equal(sent[0].activity.state, 'Artista')
+assert.equal(sent[0].activity.status_display_type, 0)
 assert.equal(sent[0].activity.timestamps.end - sent[0].activity.timestamps.start, 180)
 assert.equal(sent[0].activity.buttons[0].url, 'https://music.youtube.com/watch?v=abc12345')
 context.location.href = 'https://music.youtube.com/'
@@ -59,9 +60,24 @@ await new Promise(resolve => setImmediate(resolve))
 assert.equal(sent.at(-1).activity.assets.small_image,
   'https://raw.githubusercontent.com/GermanBartoli/Discord-Rich-Presence/main/docs/icono-pausa.png')
 assert.equal(sent.at(-1).activity.assets.small_text, 'En pausa')
+for (const [mode, expected] of [['artist', 1], ['song', 2], ['name', 0]]) {
+  settings.statusDisplay = mode
+  onChanged({ statusDisplay: {} })
+  await new Promise(resolve => setImmediate(resolve))
+  assert.equal(sent.at(-1).activity.status_display_type, expected)
+  assert.equal(sent.at(-1).activity.details, 'Canción nueva')
+  assert.equal(sent.at(-1).activity.state, 'Artista')
+}
+settings.statusDisplay = 'artist'
+delete elements['.byline.ytmusic-player-bar a']
+onChanged({ statusDisplay: {} })
+await new Promise(resolve => setImmediate(resolve))
+assert.equal(sent.at(-1).activity.status_display_type, 0)
+settings.statusDisplay = 'song'
 settings.privacyMode = true
 onChanged({ privacyMode: {} })
 await new Promise(resolve => setImmediate(resolve))
 assert.equal(sent.at(-1).activity.details, 'Escuchando una canción')
 assert.equal(sent.at(-1).activity.buttons, undefined)
-console.log('Lectura de canción, pausa y modo privacidad correctos')
+assert.equal(sent.at(-1).activity.status_display_type, undefined)
+console.log('Lectura de canción, selector de actividad, pausa y modo privacidad correctos')
