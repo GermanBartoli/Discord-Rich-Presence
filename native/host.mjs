@@ -2,6 +2,7 @@ import net from 'node:net'
 import { randomUUID } from 'node:crypto'
 
 const CLIENT_ID = '1559633203340513292'
+const RETRY_DELAYS = [1, 5, 10, 20, 40, 60, 120, 240].map(minutes => minutes * 60_000)
 const MAX_MESSAGE = 1024 * 1024
 let input = Buffer.alloc(0)
 let rpcInput = Buffer.alloc(0)
@@ -10,6 +11,7 @@ let ready = false
 let latest = null
 let connecting = false
 let retryTimer = null
+let retryAttempt = 0
 
 function reply(message) {
   const body = Buffer.from(JSON.stringify(message), 'utf8')
@@ -52,6 +54,7 @@ function handleRpc(chunk) {
       const message = JSON.parse(body.toString('utf8'))
       if (message.evt === 'READY') {
         ready = true
+        retryAttempt = 0
         reply({ connected: true })
         if (latest) setActivity(latest)
       } else if (message.cmd === 'SET_ACTIVITY' && !message.evt) {
@@ -65,10 +68,11 @@ function handleRpc(chunk) {
 
 function scheduleReconnect() {
   if (retryTimer) return
+  const delay = RETRY_DELAYS[Math.min(retryAttempt++, RETRY_DELAYS.length - 1)]
   retryTimer = setTimeout(() => {
     retryTimer = null
     connectToDiscord()
-  }, 5000)
+  }, delay)
 }
 
 function connectToDiscord(index = 0) {
