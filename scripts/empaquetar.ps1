@@ -1,4 +1,4 @@
-param([string]$Version = '1.0.6')
+param([string]$Version = '1.0.7')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $desktop = [Environment]::GetFolderPath('Desktop')

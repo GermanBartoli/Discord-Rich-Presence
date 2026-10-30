@@ -72,7 +72,6 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
         disconnect()
         error = ''
       } else {
-        connect()
         refreshMusicTabs()
       }
       reply({ ok: true })
@@ -94,6 +93,20 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
   return true
 })
 
+function checkMusicTabs() {
+  chrome.tabs.query({ url: 'https://music.youtube.com/*' }, tabs => {
+    if (tabs.length) return refreshMusicTabs()
+    latest = null
+    latestTab = null
+    clearTimeout(timer)
+    disconnect()
+  })
+}
+
+chrome.tabs.onUpdated.addListener((_tabId, change) => {
+  if (change.url) checkMusicTabs()
+})
+
 chrome.tabs.onRemoved.addListener(tabId => {
   if (tabId === latestTab) {
     latest = null
@@ -101,4 +114,5 @@ chrome.tabs.onRemoved.addListener(tabId => {
     clearTimeout(timer)
     if (port) port.postMessage({ kind: 'clear' })
   }
+  checkMusicTabs()
 })

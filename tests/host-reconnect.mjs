@@ -57,10 +57,10 @@ ready(candidates[12])
 assert.equal(candidates[12].frames.length, 1, 'No debe restaurar una actividad limpiada')
 console.log('OK: inicio tardío, reconexión, última actividad y limpieza')
 
-// Agotar los intervalos y comprobar que cuatro horas se repiten.
+// Agotar los intervalos y comprobar que diez minutos se repiten.
 candidates[12].emit('close')
 const start = delays.length - 1
-for (let attempt = 0; attempt < 14; attempt++) {
+for (let attempt = 0; attempt < 8; attempt++) {
   const first = candidates.length
   send({ kind: 'status' })
   assert.equal(candidates.length, first)
@@ -68,9 +68,9 @@ for (let attempt = 0; attempt < 14; attempt++) {
   for (let i = first; i < first + 10; i++) candidates[i].emit('error', new Error('Discord cerrado'))
   assert.equal(timers.length, 1)
 }
-assert.deepEqual(delays.slice(start), [1, 5, 5, 5, 5, 5, 5, 10, 20, 40, 60, 120, 240, 240, 240].map(m => m * 60_000))
+assert.deepEqual(delays.slice(start), [10, 30, 60, 180, 300, 600, 600, 600, 600].map(s => s * 1000))
 timers.shift()()
 ready(candidates.at(-1))
 candidates.at(-1).emit('close')
-assert.equal(delays.at(-1), 60_000, 'Conectarse debe reiniciar la espera a un minuto')
+assert.equal(delays.at(-1), 10_000, 'Conectarse debe reiniciar la espera a diez segundos')
 console.log('OK: intervalos incrementales, limite y reinicio tras conectar')
