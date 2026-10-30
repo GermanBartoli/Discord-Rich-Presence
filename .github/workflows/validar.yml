@@ -19,3 +19,5 @@ jobs:
         run: dotnet publish native/launcher/Launcher.csproj -c Release -o native/launcher/publish
       - name: Probar lectura de YouTube Music
         run: node tests/content-smoke.mjs
+      - name: Probar reconexión con Discord
+        run: node tests/host-reconnect.mjs

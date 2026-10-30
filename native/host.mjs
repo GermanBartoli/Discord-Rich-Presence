@@ -8,6 +8,8 @@ let rpcInput = Buffer.alloc(0)
 let socket = null
 let ready = false
 let latest = null
+let connecting = false
+let retryTimer = null
 
 function reply(message) {
   const body = Buffer.from(JSON.stringify(message), 'utf8')
@@ -61,18 +63,37 @@ function handleRpc(chunk) {
   }
 }
 
+function scheduleReconnect() {
+  if (retryTimer) return
+  retryTimer = setTimeout(() => {
+    retryTimer = null
+    connectToDiscord()
+  }, 5000)
+}
+
 function connectToDiscord(index = 0) {
+  if (socket || (index === 0 && (connecting || retryTimer))) return
+  connecting = true
   if (index > 9) {
+    connecting = false
+    scheduleReconnect()
     reply({ connected: false, error: 'Abrí Discord de escritorio para mostrar la actividad' })
     return
   }
   const candidate = net.createConnection(`\\\\.\\pipe\\discord-ipc-${index}`)
   candidate.once('connect', () => {
+    connecting = false
     socket = candidate
     ready = false
     rpcInput = Buffer.alloc(0)
     candidate.on('data', handleRpc)
-    candidate.on('close', () => { socket = null; ready = false; reply({ connected: false, error: 'Discord se desconectó' }) })
+    candidate.on('close', () => {
+      socket = null
+      ready = false
+      rpcInput = Buffer.alloc(0)
+      reply({ connected: false, error: 'Discord se desconectó' })
+      scheduleReconnect()
+    })
     frame(0, { v: 1, client_id: CLIENT_ID })
   })
   candidate.once('error', () => {
