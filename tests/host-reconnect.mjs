@@ -60,7 +60,7 @@ console.log('OK: inicio tardío, reconexión, última actividad y limpieza')
 // Agotar los intervalos y comprobar que cuatro horas se repiten.
 candidates[12].emit('close')
 const start = delays.length - 1
-for (let attempt = 0; attempt < 9; attempt++) {
+for (let attempt = 0; attempt < 14; attempt++) {
   const first = candidates.length
   send({ kind: 'status' })
   assert.equal(candidates.length, first)
@@ -68,7 +68,7 @@ for (let attempt = 0; attempt < 9; attempt++) {
   for (let i = first; i < first + 10; i++) candidates[i].emit('error', new Error('Discord cerrado'))
   assert.equal(timers.length, 1)
 }
-assert.deepEqual(delays.slice(start), [1, 5, 10, 20, 40, 60, 120, 240, 240, 240].map(m => m * 60_000))
+assert.deepEqual(delays.slice(start), [1, 5, 5, 5, 5, 5, 5, 10, 20, 40, 60, 120, 240, 240, 240].map(m => m * 60_000))
 timers.shift()()
 ready(candidates.at(-1))
 candidates.at(-1).emit('close')

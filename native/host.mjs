@@ -2,7 +2,7 @@ import net from 'node:net'
 import { randomUUID } from 'node:crypto'
 
 const CLIENT_ID = '1559633203340513292'
-const RETRY_DELAYS = [1, 5, 10, 20, 40, 60, 120, 240].map(minutes => minutes * 60_000)
+const RETRY_DELAYS = [1, 5, 5, 5, 5, 5, 5, 10, 20, 40, 60, 120, 240].map(minutes => minutes * 60_000)
 const MAX_MESSAGE = 1024 * 1024
 let input = Buffer.alloc(0)
 let rpcInput = Buffer.alloc(0)
