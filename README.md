@@ -1,4 +1,23 @@
-# Discord Rich Presence para YouTube Music
+# YouTube Music · Discord Rich Presence
+
+**Mostrá lo que escuchás en YouTube Music en Discord de escritorio mediante una extensión de Chrome y un conector local.**
+
+[![Repositorio](https://img.shields.io/badge/GitHub-GermanBartoli-181717?logo=github)](https://github.com/GermanBartoli/Discord-Rich-Presence)
+[![Verificaciones](https://github.com/GermanBartoli/Discord-Rich-Presence/actions/workflows/validar.yml/badge.svg)](https://github.com/GermanBartoli/Discord-Rich-Presence/actions/workflows/validar.yml)
+
+[Descargas](https://github.com/GermanBartoli/Discord-Rich-Presence/releases) · [Empezar](#primeros-pasos) · [Mapa del repositorio](#mapa-del-repositorio) · [Autoría](#autoría-de-esta-documentación)
+
+![Guía visual: YouTube Music · Discord Rich Presence](docs/readme/guia.svg)
+
+*Esquema de orientación; no representa una captura de la aplicación.*
+
+## Primeros pasos
+
+1. Instalá la extensión y el conector Windows siguiendo los pasos de Instalación.
+2. Abrí Discord de escritorio y reproducí música en YouTube Music.
+3. Revisá la conexión desde el botón de la extensión y elegí cómo mostrar la canción y los ajustes de privacidad.
+
+## Referencia y detalles
 
 Extensión de Chrome Manifest V3 que muestra en Discord de escritorio la canción o sección abierta en YouTube Music. Incluye un interruptor para activar o desactivar la actividad y conserva los ajustes de privacidad, carátula, tiempo, pausa, navegación, botones y enlaces. Proyecto independiente de Google, YouTube y Discord.
 
@@ -35,3 +54,22 @@ node --check extension/youtube-music.js
 ```
 
 La licencia y los créditos de la actividad derivada están en [LICENSE](LICENSE) y [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Si Discord se abre después
+
+El conector conserva la actividad y reintenta conectarse cuando Discord no estaba abierto. Si sigue sin aparecer, comprobá Discord de escritorio, el ID autorizado de la extensión y la instalación del conector; luego recargá YouTube Music. No hace falta introducir un token de Discord. La prueba `node tests/host-reconnect.mjs` cubre la reconexión simulada.
+
+
+## Mapa del repositorio
+
+- [native/launcher/Launcher.csproj](<native/launcher/Launcher.csproj>)
+- [LICENSE](<LICENSE>)
+- [native/launcher/Program.cs](<native/launcher/Program.cs>)
+- [docs/privacidad.md](<docs/privacidad.md>)
+- [docs/publicacion.md](<docs/publicacion.md>)
+
+## Autoría de esta documentación
+
+Repositorio mantenido por [Germán Bartoli](https://github.com/GermanBartoli). Guía revisada y actualizada con **Codex**, coautor de esta actualización documental. Los autores, colaboradores, licencias y recursos de terceros conservan sus créditos originales.
+
+Los commits de esta revisión incluyen `Co-authored-by: Codex <noreply@openai.com>`; esta atribución no modifica la autoría del historial anterior.
