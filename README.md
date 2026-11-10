@@ -29,7 +29,7 @@ Extensión de Chrome Manifest V3 que muestra en Discord de escritorio la canció
 4. En PowerShell, desde la carpeta descomprimida, ejecutá `powershell -ExecutionPolicy Bypass -File .\scripts\instalar-conector.ps1 -ExtensionId TU_ID`.
 5. Abrí Discord de escritorio, reiniciá Chrome y reproducí una canción en `music.youtube.com`. El botón de la extensión muestra la conexión y permite desactivar la actividad.
 
-El conector requiere Node.js y .NET 9 instalados. Chrome se comunica con él mediante Native Messaging; el conector usa el IPC local de Discord. No requiere tokens ni contraseñas.
+El conector requiere Node.js 24 o posterior y .NET 9 instalados. Chrome se comunica con él mediante Native Messaging; el conector usa el IPC local de Discord. No requiere tokens ni contraseñas.
 
 ## Funcionamiento
 
