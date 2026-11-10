@@ -23,11 +23,18 @@ Extensión de Chrome Manifest V3 que muestra en Discord de escritorio la canció
 
 ## Instalación en Windows
 
-1. Descomprimí el ZIP de la release en una carpeta permanente.
-2. Abrí `chrome://extensions`, activá **Modo desarrollador** y elegí **Cargar descomprimida**. Seleccioná la carpeta `extension`.
-3. Copiá el ID de 32 letras de la extensión que muestra Chrome.
-4. En PowerShell, desde la carpeta descomprimida, ejecutá `powershell -ExecutionPolicy Bypass -File .\scripts\instalar-conector.ps1 -ExtensionId TU_ID`.
-5. Abrí Discord de escritorio, reiniciá Chrome y reproducí una canción en `music.youtube.com`. El botón de la extensión muestra la conexión y permite desactivar la actividad.
+1. Descomprimí el ZIP Windows en una carpeta permanente. En este equipo se utiliza `C:\Cosas\Proyectos\release\Discord-Rich-Presence`.
+2. Hacé doble clic en `Instalar.cmd`. El conector obtiene automáticamente el ID desde la clave pública de la extensión; no hace falta copiarlo ni abrir PowerShell.
+3. Abrí `chrome://extensions`, activá **Modo desarrollador** y elegí **Cargar descomprimida**. Seleccioná la subcarpeta `extension`.
+4. Abrí Discord de escritorio y reproducí una canción en `music.youtube.com`.
+
+### Actualizaciones
+
+Codex actualiza los archivos dentro de la misma carpeta y vos solo pulsás **Recargar** en la tarjeta de la extensión de Chrome. La instalación del conector se hace una sola vez: no vuelvas a ejecutar `Instalar.cmd` en cada actualización. Si descargás una release manualmente, descomprimila sobre esa misma carpeta antes de recargar. Si una pestaña de YouTube Music ya abierta no retoma la conexión, recargá esa pestaña. No elimines la extensión: Chrome conserva sus ajustes y el ID permanece estable gracias a la clave pública incluida. El empaquetador actualiza esta carpeta fija en este equipo y guarda los ZIP en `release`.
+
+Si venís de la versión 1.0.9 o anterior, cargá una sola vez la extensión desde la nueva carpeta fija y desactivá la anterior para evitar actividad duplicada. La nueva identidad no hereda automáticamente los ajustes de la anterior; volvé a elegirlos en el popup. Las actualizaciones posteriores conservan esa identidad y sus ajustes.
+
+Chrome exige la carga manual inicial mientras la extensión se distribuye descomprimida. El instalador registra el conector local, pero no instala silenciosamente la extensión en Chrome. El parámetro opcional `-ExtensionId` sigue disponible para un ID de Chrome Web Store distinto.
 
 El conector requiere Node.js 24 o posterior y .NET 9 instalados. Chrome se comunica con él mediante Native Messaging; el conector usa el IPC local de Discord. No requiere tokens ni contraseñas.
 

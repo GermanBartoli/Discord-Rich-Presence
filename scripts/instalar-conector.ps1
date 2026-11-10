@@ -1,6 +1,17 @@
-param([Parameter(Mandatory=$true)][ValidatePattern('^[a-p]{32}$')][string]$ExtensionId)
+param([ValidatePattern('^[a-p]{32}$')][string]$ExtensionId)
 
+$ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
+if (-not $ExtensionId) {
+    $extension = Get-Content -Raw -LiteralPath (Join-Path $root 'extension\manifest.json') | ConvertFrom-Json
+    if (-not $extension.key) { throw 'La extensión no contiene la clave pública para obtener su ID.' }
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try { $hash = $sha.ComputeHash([Convert]::FromBase64String($extension.key)) } finally { $sha.Dispose() }
+    $ExtensionId = -join ($hash[0..15] | ForEach-Object {
+        [char](97 + ($_ -shr 4))
+        [char](97 + ($_ -band 15))
+    })
+}
 $hostPath = (Resolve-Path -LiteralPath (Join-Path $root 'native\launcher\publish\Launcher.exe')).Path
 $manifest = Join-Path $root 'native\host-manifest.json'
 $config = @{

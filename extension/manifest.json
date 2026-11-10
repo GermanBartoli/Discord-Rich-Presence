@@ -1,7 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Discord Rich Presence para YouTube Music",
-  "version": "1.0.9",
+  "version": "1.0.10",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5uwneoxS1k0xhrtr1wZj7PuG4q8Mfz/ybEfgj8cZIf8cSMu1dxL8IHLZwj8fBUoReRH4XPbOBqS6Vht+2lYGDtkC/GILPyguNkHLEEdJbayeHLVYfYa6hldJpupEncIKPbk1PE2zrewV6B7ppJNmDtD/6qRm+S1z8RHNax9SxZAJcNgmVBJReQIMeVCwVPiKGDjvoDO6V1K9Ho1+NWCixZYJeg2DxSAoVOt/ORgfi7/sEIBfLueYVJY5DnmOUjbtQ9ZevCnWvjja51rYgEUFPJjVE5u/7yNVL3pGI2N5lOoaUQ0mikoLlNSdNe8JKA8GXHEAq0r3KrwYwSLrZhEvVQIDAQAB",
   "description": "Muestra la actividad de YouTube Music en Discord y permite activarla o desactivarla.",
   "permissions": ["storage", "nativeMessaging"],
   "host_permissions": ["https://music.youtube.com/*"],
