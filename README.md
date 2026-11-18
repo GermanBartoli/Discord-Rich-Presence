@@ -36,7 +36,7 @@ Si venís de la versión 1.0.9 o anterior, cargá una sola vez la extensión des
 
 Chrome exige la carga manual inicial mientras la extensión se distribuye descomprimida. El instalador registra el conector local, pero no instala silenciosamente la extensión en Chrome. El parámetro opcional `-ExtensionId` sigue disponible para un ID de Chrome Web Store distinto.
 
-El conector requiere Node.js 24 o posterior y .NET 9 instalados. Chrome se comunica con él mediante Native Messaging; el conector usa el IPC local de Discord. No requiere tokens ni contraseñas.
+El conector requiere Node.js 24 o posterior y .NET 10 instalados. Chrome se comunica con él mediante Native Messaging; el conector usa el IPC local de Discord. No requiere tokens ni contraseñas.
 
 ## Funcionamiento
 
